@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  db.identity-service.postgres:
+    image: postgres:latest
+    container_name: identity_service_postgres
+    environment:
+      POSTGRES_USER: ${IDENTITY_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${IDENTITY_POSTGRES_PASSWORD}
+      POSTGRES_DB:  ${IDENTITY_POSTGRES_DB}
+    ports:
+      - "6020:5432"
+    volumes:
+      - identity_service_postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.7
+    container_name: keycloak
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db.identity-service.postgres:5432/${IDENTITY_POSTGRES_DB}
+      KC_DB_USERNAME: ${IDENTITY_POSTGRES_USER}
+      KC_DB_PASSWORD: ${IDENTITY_POSTGRES_PASSWORD}
+      KC_HOSTNAME: localhost
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_HTTP_ENABLED: true 
+      KC_DB_URL_HOST: db.identity-service.postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: ${IDENTITY_POSTGRES_DB}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db.identity-service.postgres
+    command:
+      - start-dev 
+    networks:
+      - booking-network
+    restart: unless-stopped
+
+  db.hotel-service.postgres:
+    image: postgres:latest
+    container_name: hotel_service_postgres
+    environment:
+      POSTGRES_USER: ${HOTEL_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${HOTEL_POSTGRES_PASSWORD}
+      POSTGRES_DB:  ${HOTEL_POSTGRES_DB}
+    ports:
+      - "6021:5432"
+    volumes:
+      - hotel_service_postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+  db.bus-service.postgres:
+    image: postgres:latest
+    container_name: bus_service_postgres
+    environment:
+      POSTGRES_USER: ${BUS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${BUS_POSTGRES_PASSWORD}
+      POSTGRES_DB:  ${BUS_POSTGRES_DB}
+    ports:
+      - "6022:5432"
+    volumes:
+      - bus_service_postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+  db.plane-service.postgres:
+    image: postgres:latest
+    container_name: plane_service_postgres
+    environment:
+      POSTGRES_USER: ${PLANE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${PLANE_POSTGRES_PASSWORD}
+      POSTGRES_DB:  ${PLANE_POSTGRES_DB}
+    ports:
+      - "6023:5432"
+    volumes:
+      - plane_service_postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+
+volumes:
+  identity_service_postgres_data:
+  hotel_service_postgres_data:
+  bus_service_postgres_data:
+  plane_service_postgres_data:
+
+networks:
+  booking-network:
+    driver: bridge
