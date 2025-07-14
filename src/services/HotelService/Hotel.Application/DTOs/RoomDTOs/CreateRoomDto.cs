@@ -7,10 +7,10 @@ public record CreateRoomDto
     public int TotalRoomCount { get; init; }
     public string RoomType { get; init; }  
     public int MaxOccupancy { get; init; }
-    public decimal Size { get; init; }
-    public decimal BasePrice { get; init; }
-    public decimal WeekendPriceMultiplier { get; init; } 
-    public decimal SeasonPriceMultiplier { get; init; } 
+    public int Size { get; init; }
+    public int BasePrice { get; init; }
+    public int WeekendPriceMultiplier { get; init; } 
+    public int SeasonPriceMultiplier { get; init; } 
 
     public bool HasWifi { get; init; }
     public bool HasAirConditioning { get; init; }

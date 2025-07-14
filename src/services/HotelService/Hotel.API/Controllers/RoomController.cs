@@ -31,7 +31,7 @@ namespace Hotel.API.Controllers
                 return Ok(rooms);
             return BadRequest(rooms);
         }
-        [HttpGet("{RoomId}")]
+        [HttpGet("hotel/{RoomId}")]
         public async Task<ActionResult<Result>> GetRoomById(Guid RoomId)
         {
             var room = await _mediator.Send(new GetRoomByIdQuery(RoomId));

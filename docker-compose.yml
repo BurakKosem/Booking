@@ -79,12 +79,26 @@ services:
       - plane_service_postgres_data:/var/lib/postgresql/data
     networks:
       - booking-network
+  db.reservation-service.postgres:
+    image: postgres:latest
+    container_name: reservation_service_postgres
+    environment:
+      POSTGRES_USER: ${RESERVATION_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${RESERVATION_POSTGRES_PASSWORD}
+      POSTGRES_DB:  ${RESERVATION_POSTGRES_DB}
+    ports:
+      - "6024:5432"
+    volumes:
+      - reservation_service_postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
 
 volumes:
   identity_service_postgres_data:
   hotel_service_postgres_data:
   bus_service_postgres_data:
   plane_service_postgres_data:
+  reservation_service_postgres_data:
 
 networks:
   booking-network:

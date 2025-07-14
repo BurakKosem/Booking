@@ -11,10 +11,10 @@ public class Room : BaseEntity
     public int TotalRoomCount { get; set; }
     public RoomType RoomType { get; set; }
     public int MaxOccupancy { get; set; }
-    public decimal Size { get; set; }
-    public decimal BasePrice { get; set; }
-    public decimal WeekendPriceMultiplier { get; set; } = 1.1m;
-    public decimal SeasonPriceMultiplier { get; set; } = 1.5m;
+    public int Size { get; set; }
+    public int BasePrice { get; set; }
+    public int WeekendPriceMultiplier { get; set; } = 2;
+    public int SeasonPriceMultiplier { get; set; } = 3;
 
     public Guid HotelId { get; set; }
     public Hotel Hotel { get; set; } = default!;
